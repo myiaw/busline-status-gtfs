@@ -16,6 +16,24 @@ public class Trip implements java.io.Serializable {
     private int run_sequence_number;
     public Trip() {}
 
+    public int getRouteId() {
+        return route_id;
+    }
+    public void setRouteId(int route_id) {
+        this.route_id = route_id;
+    }
+    public void getRouteId(int route_id) {
+        this.route_id = route_id;
+    }
+    public void setTripId(String trip_id) {
+        this.trip_id = trip_id;
+    }
+    public String getTripId() {
+        return trip_id;
+    }
+
+
+
     @Override
     public String toString() {
         return "Trip{" +

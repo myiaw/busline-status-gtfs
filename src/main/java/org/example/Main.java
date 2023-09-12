@@ -1,63 +1,61 @@
 package org.example;
 
 
-import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import static org.example.Parser.ParseRoutes;
+import static org.example.Parser.ParseStops;
 
 
 public class Main {
+    private static void getData(){
+        List<Stop> stops = ParseStops();
+        List<Route> routes = ParseRoutes();
+        List<StopTime> stopTimes = Parser.ParseStopTimes();
+        List<Trip> trips = Parser.ParseTrips();
 
-    private static void getData() throws FileNotFoundException{
-        String stopTimesPath = "src/main/resources/stop_times.txt";
-        String stopsPath = "src/main/resources/stops.txt";
-        String tripsPath = "src/main/resources/trips.txt";
-        String routesPath = "src/main/resources/routes.txt";
+        for(Stop stop : stops) {
+            System.out.println("STOP" + stop.getStopId());
+        }
 
-        List<Stop> stops = new CsvToBeanBuilder<Stop>(new FileReader(stopsPath))
-                .withType(Stop.class)
-                .build()
-                .parse();
+        for(Route route : routes) {
+            System.out.println("ROUTE" + route.getRouteId());
+        }
+        for(StopTime stopTime : stopTimes) {
+            System.out.println("STOPTIME TRIP ID: " + stopTime.getTripId());
+            System.out.println("STOPTIME STOP ID: " +stopTime.getStopId());
+            System.out.println("STOPTIME ARRIVAL TIME: " + stopTime.getArrivalTime());
+        }
+        for(Trip trip : trips) {
+            System.out.println("TRIP ID" + trip.getTripId());
+            System.out.println("TRIP ROUTE ID" + trip.getRouteId());
+        }
+        int count = 0;
+        for(StopTime stopTime : stopTimes) {
+                if(stopTime.isWithinTwoHours() && stopTime.getStopId() == 1 && count < 5) {
+                    count++;
+                    System.out.println("")
+                }
+            }
+        }
 
-        List<Route> routes = new CsvToBeanBuilder<Route>(new FileReader(routesPath))
-                .withType(Route.class)
-                .build()
-                .parse();
 
-        List<Trip> trips = new CsvToBeanBuilder<Trip>(new FileReader(tripsPath))
-                .withType(Trip.class)
-                .build()
-                .parse();
 
-        List<StopTime> stopTimes = new CsvToBeanBuilder<StopTime>(new FileReader(stopTimesPath))
-                .withType(StopTime.class)
-                .build()
-                .parse();
+
+
     }
 
 
 
 
     public static void main(String[] args) throws FileNotFoundException {
-
-        if (args.length != 3) {
-            System.out.println("Invalid");
-            System.exit(1);
-        }
-        String id = args[0];
-        String busNum = args[1];
-        String type = args[2];
-        System.out.println("id: " + id + " busNum: " + busNum + " type: " + type);
-        getData();
-
-
-
+    getData();
 
 
 

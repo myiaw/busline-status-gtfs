@@ -1,7 +1,7 @@
 package org.example;
 
 public class Route implements java.io.Serializable {
-    private String route_id;
+    private int route_id;
     private String agency_id;
     private String route_short_name;
     private String route_long_name;
@@ -14,6 +14,12 @@ public class Route implements java.io.Serializable {
     // Default constructor
     public Route() {}
 
+    public int getRouteId() {
+        return route_id;
+    }
+    public void setRouteId(int route_id) {
+        this.route_id = route_id;
+    }
     @Override
     public String toString() {
         return "Route{" +

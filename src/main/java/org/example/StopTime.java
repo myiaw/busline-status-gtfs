@@ -1,21 +1,43 @@
 package org.example;
 
+import java.time.LocalTime;
+
 public class StopTime implements java.io.Serializable{
 
     private String trip_id;
-    private String arrival_time; // Maybe date format?
-    private String departure_time; // Maybe date format?
+    private LocalTime arrival_time;
     private int stop_id;
+
+    private LocalTime departure_time;
     private int stop_sequence;
     private String stop_headsign;
-
-    // No data for these fields
     private String pickup_type;
     private String drop_off_type;
     private String shape_dist_traveled;
     private String timepoint;
 
+
     public StopTime() {}
+
+    public String getTripId() {
+        return trip_id;
+    }
+    public void setTripId(String trip_id) {
+        this.trip_id = trip_id;
+    }
+    public LocalTime getArrivalTime() {
+        return arrival_time;
+    }
+    public void setArrivalTime(String arrival_time) {
+        this.arrival_time = LocalTime.parse(arrival_time);
+    }
+    public void setStopId (int stop_id) {
+        this.stop_id = stop_id;
+    }
+    public int getStopId() {
+        return stop_id;
+    }
+
 
     @Override
     public String toString() {
@@ -31,5 +53,10 @@ public class StopTime implements java.io.Serializable{
                 ", shape_dist_traveled='" + shape_dist_traveled + '\'' +
                 ", timepoint='" + timepoint + '\'' +
                 '}';
+    }
+
+    public boolean isWithinTwoHours() {
+        LocalTime twoHours = LocalTime.now().plusHours(2);
+        return !arrival_time.isAfter(twoHours);
     }
 }
