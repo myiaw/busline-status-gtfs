@@ -4,33 +4,27 @@ import java.time.LocalTime;
 
 public class StopTime implements java.io.Serializable{
 
-    private String trip_id;
-    private LocalTime arrival_time;
-    private int stopTime_id;
+    private final String trip_id;
+    private final LocalTime arrival_time;
+    private final int stopTime_id;
 
 
-    public StopTime() {}
+    public StopTime(String trip_id, String arrival_time, String stopTime_id) {
+        this.trip_id = trip_id;
+        this.arrival_time = LocalTime.parse(arrival_time);
+        this.stopTime_id = Integer.parseInt(stopTime_id);
+    }
+
 
     public String getTripId() {
         return trip_id;
     }
-    public void setTripId(String trip_id) {
-        this.trip_id = trip_id;
-    }
     public LocalTime getArrivalTime() {
         return arrival_time;
-    }
-    public void setArrivalTime(String arrival_time) {
-        this.arrival_time = LocalTime.parse(arrival_time);
-    }
-    public void setStopTimeId (int stop_id) {
-        this.stopTime_id = stop_id;
     }
     public int getStopId() {
         return stopTime_id;
     }
-
-
     @Override
     public String toString() {
         return "StopTime{" +

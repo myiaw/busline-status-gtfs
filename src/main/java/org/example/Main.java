@@ -6,20 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Map;
 
-import static org.example.Parser.ParseStops;
+import static org.example.Parser.*;
 
 public class Main {
 
 
 
     public static void main(String[] args) {
-//        if (args.length != 3 ) {
-//            System.out.println("Invalid amount of arguments.");
-//            System.exit(1);
-//        }
-//        if (!args[2].equals("relative") && !args[2].equals("absolute")) {
-//            System.out.println("Invalid time format");
-//            System.exit(1);
+//        while (!parseArguments(args)) {
+//            System.out.println("Please enter valid arguments.");
+//            return;
 //        }
         int stationId = 3;
         int numOfBuses = 5;
@@ -34,8 +30,8 @@ public class Main {
         //Map<Integer, Route> routes = ParseRoutes(); // Not needed because we have route_id in Trip
 
         Map<Integer, Stop> stops = ParseStops();
-        List<StopTime> stopTimes = Parser.ParseStopTimes();
-        Map<String, Trip> trips = Parser.ParseTrips();
+        List<StopTime> stopTimes = ParseStopTimes();
+        Map<String, Trip> trips = ParseTrips();
 
 
         // Because I switched to map, I can use key to get the stop and then its name.
