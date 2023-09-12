@@ -1,8 +1,4 @@
 package org.example;
-
-import org.example.*;
-
-import java.io.FileNotFoundException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
@@ -17,19 +13,21 @@ public class Main {
 
 
 
-
-    public static void main(String[] args) throws FileNotFoundException {
-//        if (args.length != 3) {
-//            System.out.println("Invalid arguments");
+    public static void main(String[] args) {
+//        if (args.length != 3 ) {
+//            System.out.println("Invalid amount of arguments.");
+//            System.exit(1);
+//        }
+//        if (!args[2].equals("relative") && !args[2].equals("absolute")) {
+//            System.out.println("Invalid time format");
 //            System.exit(1);
 //        }
 
-//        int stationId = Integer.parseInt(args[0]);
-//        int numOfBuses = Integer.parseInt(args[1]);
-//        String timeFormat = args[2];
+
+
         int stationId = 3;
         int numOfBuses = 5;
-        String timeFormat = "absolute";
+        String timeFormat = "relative";
 
 
 
@@ -37,14 +35,14 @@ public class Main {
     }
 
     private static void getData(int stationId, int numOfBuses, String timeFormat) {
-        Map<Integer,Stop> stops = ParseStops();
-        Map<Integer,Route> routes = ParseRoutes();
+        Map<Integer, Stop> stops = ParseStops();
+        Map<Integer, Route> routes = ParseRoutes();
         List<StopTime> stopTimes = Parser.ParseStopTimes();
         Map<String, Trip> trips = Parser.ParseTrips();
 
         Stop stop = stops.get(stationId);
         if (stop != null) {
-            System.out.println("Postajalisce: " + stop.getStopName());
+            System.out.println("Stop: " + stop.getStopName());
         } else {
             System.out.println("Not Found!");
         }
@@ -56,13 +54,41 @@ public class Main {
                 .collect(Collectors.toList());
 
 
+        // Sort it from closest to furthest
         List<StopTime> sortedTimes = filteredStopTimes.stream()
                 .sorted(Comparator.comparing(StopTime::getArrivalTime))
                 .collect(Collectors.toList());
 
-//
 
+        // Connect times with Route names
+        Map<Integer, List<LocalTime>> timesGroupedByRouteId = sortedTimes.stream()
+                .collect(Collectors.groupingBy(
+                        stopTime -> {
+                            Trip trip = trips.get(stopTime.getTripId());
+                            return (trip != null) ? trip.getRouteId() : null;
+                        },
+                        Collectors.mapping(StopTime::getArrivalTime, Collectors.toList())
+                ));
 
-        }
+        // Find routes and print them with their times (limited to numOfBuses)
+        timesGroupedByRouteId.forEach((routeId, times) -> {
+            if (routeId != null) {
+                System.out.print(routeId + ": ");
+                if(timeFormat.equals("relative")) {
+                    LocalTime now = LocalTime.now();
+                    times.stream().limit(numOfBuses).forEach(time -> {
+                        System.out.print(ChronoUnit.MINUTES.between(now, time) + "m ");
+                    });
+                } else  {
+                    times.stream().limit(numOfBuses).forEach(time -> System.out.print(time + " "));
+                }
+
+                System.out.println();
+            }
+        });
+            }
+
     }
+
+
 
