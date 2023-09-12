@@ -1,66 +1,68 @@
 package org.example;
 
+import org.example.*;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Collection;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
+import java.util.Map;
+
 import static org.example.Parser.ParseRoutes;
 import static org.example.Parser.ParseStops;
 
-
 public class Main {
-    private static void getData(){
-        List<Stop> stops = ParseStops();
-        List<Route> routes = ParseRoutes();
-        List<StopTime> stopTimes = Parser.ParseStopTimes();
-        List<Trip> trips = Parser.ParseTrips();
-
-        for(Stop stop : stops) {
-            System.out.println("STOP" + stop.getStopId());
-        }
-
-        for(Route route : routes) {
-            System.out.println("ROUTE" + route.getRouteId());
-        }
-        for(StopTime stopTime : stopTimes) {
-            System.out.println("STOPTIME TRIP ID: " + stopTime.getTripId());
-            System.out.println("STOPTIME STOP ID: " +stopTime.getStopId());
-            System.out.println("STOPTIME ARRIVAL TIME: " + stopTime.getArrivalTime());
-        }
-        for(Trip trip : trips) {
-            System.out.println("TRIP ID" + trip.getTripId());
-            System.out.println("TRIP ROUTE ID" + trip.getRouteId());
-        }
-        int count = 0;
-        for(StopTime stopTime : stopTimes) {
-                if(stopTime.isWithinTwoHours() && stopTime.getStopId() == 1 && count < 5) {
-                    count++;
-                    System.out.println("")
-                }
-            }
-        }
-
-
-
-
-
-    }
 
 
 
 
     public static void main(String[] args) throws FileNotFoundException {
-    getData();
+//        if (args.length != 3) {
+//            System.out.println("Invalid arguments");
+//            System.exit(1);
+//        }
+
+//        int stationId = Integer.parseInt(args[0]);
+//        int numOfBuses = Integer.parseInt(args[1]);
+//        String timeFormat = args[2];
+        int stationId = 3;
+        int numOfBuses = 5;
+        String timeFormat = "absolute";
 
 
 
-
+        getData(stationId, numOfBuses, timeFormat);
     }
 
+    private static void getData(int stationId, int numOfBuses, String timeFormat) {
+        Map<Integer,Stop> stops = ParseStops();
+        Map<Integer,Route> routes = ParseRoutes();
+        List<StopTime> stopTimes = Parser.ParseStopTimes();
+        Map<String, Trip> trips = Parser.ParseTrips();
 
-}
+        Stop stop = stops.get(stationId);
+        if (stop != null) {
+            System.out.println("Postajalisce: " + stop.getStopName());
+        } else {
+            System.out.println("Not Found!");
+        }
+
+        // Filter to match stationId and within 2h.
+        List<StopTime> filteredStopTimes = stopTimes.stream()
+                .filter(stopTime -> stopTime.getStopId() == stationId)
+                .filter(StopTime::isWithinTwoHours)
+                .collect(Collectors.toList());
+
+
+        List<StopTime> sortedTimes = filteredStopTimes.stream()
+                .sorted(Comparator.comparing(StopTime::getArrivalTime))
+                .collect(Collectors.toList());
+
+//
+
+
+        }
+    }
+

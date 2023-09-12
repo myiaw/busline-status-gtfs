@@ -56,7 +56,9 @@ public class StopTime implements java.io.Serializable{
     }
 
     public boolean isWithinTwoHours() {
-        LocalTime twoHours = LocalTime.now().plusHours(2);
-        return !arrival_time.isAfter(twoHours);
+        LocalTime now = LocalTime.now();
+        LocalTime twoHours = now.plusHours(2);
+        return !arrival_time.isBefore(now) && !arrival_time.isAfter(twoHours);
     }
+
 }

@@ -4,24 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Parser {
     Parser() {}
 
-    public static void parseArguments(String[] args, List<Stop> stops, List<Route> routes, List<Trip> trips, List<StopTime> stopTimes) {
-        if (args.length != 3) {
-            System.out.println("Invalid");
-            System.exit(1);
-        }
-        String id = args[0];
-        String busNum = args[1];
-        String type = args[2];
-        System.out.println("id: " + id + " busNum: " + busNum + " type: " + type);
-    }
-
-    public static List<Stop> ParseStops() {
-        List<Stop> stops = new ArrayList<>();
+    public static Map<Integer,Stop> ParseStops() {
+       Map<Integer, Stop> stops = new HashMap<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader("src/main/resources/stops.txt"))) {
             String line = br.readLine();
@@ -30,7 +21,8 @@ public class Parser {
                 String[] values = line.split(",", -1);
                 Stop stop = new Stop();
                 stop.setStopId(Integer.parseInt(values[0]));
-                stops.add(stop);
+                stop.setStopName(values[2]);
+                stops.put(stop.getStopId(), stop);
             }
 
         } catch(IOException ex) {
@@ -40,8 +32,8 @@ public class Parser {
         return stops;
     }
 
-    public static List<Route> ParseRoutes(){
-        List<Route> routes = new ArrayList<>();
+    public static Map<Integer,Route> ParseRoutes(){
+        Map<Integer, Route> routes = new HashMap<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader("src/main/resources/routes.txt"))) {
             String line = br.readLine();
@@ -50,7 +42,7 @@ public class Parser {
                 String[] values = line.split(",", -1);
                 Route route = new Route();
                 route.setRouteId(Integer.parseInt(values[0]));
-                routes.add(route);
+                routes.put(route.getRouteId(),route);
             }
 
         } catch(IOException ex) {
@@ -60,8 +52,8 @@ public class Parser {
         return routes;
     }
 
-    public static List<Trip> ParseTrips(){
-        List<Trip> trips = new ArrayList<>();
+    public static Map<String,Trip> ParseTrips(){
+        Map<String, Trip> trips = new HashMap<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader("src/main/resources/trips.txt"))) {
             String line = br.readLine();
@@ -71,7 +63,7 @@ public class Parser {
                 Trip trip = new Trip();
                 trip.setRouteId(Integer.parseInt(values[0]));
                 trip.setTripId(values[2]);
-                trips.add(trip);
+                trips.put(trip.getTripId(),trip);
             }
 
         } catch(IOException ex) {
