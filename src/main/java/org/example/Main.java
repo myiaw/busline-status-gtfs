@@ -13,17 +13,29 @@ public class Main {
 
 
     public static void main(String[] args) {
-//        while (!parseArguments(args)) {
-//            System.out.println("Please enter valid arguments.");
-//            return;
-//        }
-        int stationId = 3;
-        int numOfBuses = 5;
-        String timeFormat = "relative";
+
+        if (args.length != 3 ) {
+            System.out.println("Invalid argument count");
+            System.exit(1);
+        }
+        if (!args[2].equals("relative") && !args[2].equals("absolute")) {
+            System.out.println("Invalid time format");
+            System.exit(1);
+        }
+
+        try{
+            int stationId = Integer.parseInt(args[0]);
+            int numOfBuses = Integer.parseInt(args[1]);
+            getData(stationId, numOfBuses, args[2]);
+        }catch (NumberFormatException e) {
+            System.out.println("Invalid station id or number of buses");
+            System.exit(1);
+        }
 
 
 
-        getData(stationId, numOfBuses, timeFormat);
+
+
     }
 
     private static void getData(int stationId, int numOfBuses, String timeFormat) {
@@ -48,11 +60,12 @@ public class Main {
                 .filter(StopTime::isWithinTwoHours)
                 .collect(Collectors.toList());
 
-
         // Sort it from closest to furthest
         List<StopTime> sortedTimes = filteredStopTimes.stream()
                 .sorted(Comparator.comparing(StopTime::getArrivalTime))
                 .collect(Collectors.toList());
+
+
 
 
         // Connect times with Route names
