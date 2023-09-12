@@ -6,7 +6,7 @@ public class StopTime implements java.io.Serializable{
 
     private String trip_id;
     private LocalTime arrival_time;
-    private int stop_id;
+    private int stopTime_id;
 
 
     public StopTime() {}
@@ -23,11 +23,11 @@ public class StopTime implements java.io.Serializable{
     public void setArrivalTime(String arrival_time) {
         this.arrival_time = LocalTime.parse(arrival_time);
     }
-    public void setStopId (int stop_id) {
-        this.stop_id = stop_id;
+    public void setStopTimeId (int stop_id) {
+        this.stopTime_id = stop_id;
     }
     public int getStopId() {
-        return stop_id;
+        return stopTime_id;
     }
 
 
@@ -36,7 +36,7 @@ public class StopTime implements java.io.Serializable{
         return "StopTime{" +
                 "trip_id='" + trip_id + '\'' +
                 ", arrival_time=" + arrival_time +
-                ", stop_id=" + stop_id +
+                ", stop_id=" + stopTime_id +
                 '}';
     }
 

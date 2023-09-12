@@ -9,19 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Parser {
-    Parser() {}
-
     public static Map<Integer,Stop> ParseStops() {
        Map<Integer, Stop> stops = new HashMap<>();
-
         try(BufferedReader br = new BufferedReader(new FileReader("src/main/resources/stops.txt"))) {
-            String line = br.readLine();
-
+            String line = br.readLine(); // Skip first line
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",", -1);
-                Stop stop = new Stop();
-                stop.setStopId(Integer.parseInt(values[0]));
-                stop.setStopName(values[2]);
+                Stop stop = new Stop(values[0], values[2]); // Made constructor for parsing
                 stops.put(stop.getStopId(), stop);
             }
 
@@ -32,26 +26,6 @@ public class Parser {
         return stops;
     }
 
-    public static Map<Integer,Route> ParseRoutes(){
-        Map<Integer, Route> routes = new HashMap<>();
-
-        try(BufferedReader br = new BufferedReader(new FileReader("src/main/resources/routes.txt"))) {
-            String line = br.readLine();
-
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",", -1);
-                Route route = new Route();
-                route.setRouteId(Integer.parseInt(values[0]));
-                routes.put(route.getRouteId(),route);
-            }
-
-        } catch(IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        return routes;
-    }
-
     public static Map<String,Trip> ParseTrips(){
         Map<String, Trip> trips = new HashMap<>();
 
@@ -60,9 +34,7 @@ public class Parser {
 
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",", -1);
-                Trip trip = new Trip();
-                trip.setRouteId(Integer.parseInt(values[0]));
-                trip.setTripId(values[2]);
+                Trip trip = new Trip(values[0],values[2]); // Made constructor for parsing
                 trips.put(trip.getTripId(),trip);
             }
 
@@ -81,11 +53,11 @@ public class Parser {
             String line = br.readLine();
 
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(",", -1);
+                String[] values = line.split(",", -1); // No limit on split
                 StopTime stopTime = new StopTime();
                 stopTime.setTripId(values[0]);
                 stopTime.setArrivalTime(values[1]);
-                stopTime.setStopId(Integer.parseInt(values[3]));
+                stopTime.setStopTimeId(Integer.parseInt(values[3]));
                 stopTimes.add(stopTime);
             }
 
@@ -94,7 +66,6 @@ public class Parser {
         }
 
         return stopTimes;
-
     }
 
 }

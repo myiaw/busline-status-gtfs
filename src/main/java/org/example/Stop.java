@@ -3,26 +3,17 @@ package org.example;
 
 
 // Integer on values that are null, maybe getters/setters if needed.
-public class Stop implements java.io.Serializable {
-    private int stopId;
-    private String stopName;
+final public class Stop implements java.io.Serializable {
+    private final int stopId;
+    private final String stopName;
 
-
-    // Default constructor
-    public Stop() {}
-
-
-    public void setStopId(int stopId) {
-        this.stopId = stopId;
-    }
-
-    public int getStopId() {return stopId;}
-    public String getStopName() {return stopName;}
-
-    public void setStopName(String stopName) {
+    // Constructor for parsing the stop.txt file, this way I can use final variable
+    public Stop(String stopId, String stopName) {
+        this.stopId = Integer.parseInt(String.valueOf(stopId));
         this.stopName = stopName;
     }
-
+    public int getStopId() {return stopId;}
+    public String getStopName() {return stopName;}
 
     @Override
     public String toString() {
