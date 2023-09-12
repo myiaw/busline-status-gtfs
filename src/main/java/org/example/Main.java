@@ -22,9 +22,6 @@ public class Main {
 //            System.out.println("Invalid time format");
 //            System.exit(1);
 //        }
-
-
-
         int stationId = 3;
         int numOfBuses = 5;
         String timeFormat = "relative";
@@ -35,11 +32,14 @@ public class Main {
     }
 
     private static void getData(int stationId, int numOfBuses, String timeFormat) {
+        //Map<Integer, Route> routes = ParseRoutes(); // Not needed because we have route_id in Trip
+
         Map<Integer, Stop> stops = ParseStops();
-        Map<Integer, Route> routes = ParseRoutes();
         List<StopTime> stopTimes = Parser.ParseStopTimes();
         Map<String, Trip> trips = Parser.ParseTrips();
 
+
+        // Because I switched to map, I can use key to get the stop and then its name.
         Stop stop = stops.get(stationId);
         if (stop != null) {
             System.out.println("Stop: " + stop.getStopName());
