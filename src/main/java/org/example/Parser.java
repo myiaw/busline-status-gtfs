@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Parser {
-
-    public static Map<Integer,Stop> ParseStops() {
+final public class Parser {
+    // Used only needed fields from the files to save memory.
+    public static Map<Integer,Stop> parseStops() {
         File stopsFile = new File("src/main/resources/stops.txt");
         Map<Integer, Stop> stops = new HashMap<>();
 
@@ -16,8 +16,8 @@ public class Parser {
             try(BufferedReader br = new BufferedReader(new FileReader(stopsFile))) {
                 String line = br.readLine(); // Skip first line
                 while ((line = br.readLine()) != null) {
-                    String[] values = line.split(",", -1);
-                    Stop stop = new Stop(values[0], values[2]);
+                    String[] values = line.split(",", -1); // -1 means unlimited splits
+                    Stop stop = new Stop(values[0], values[2]); // Only need stop_id and stop_name
                     stops.put(stop.getStopId(), stop);
                 }
             } catch(IOException ex) {
@@ -30,7 +30,7 @@ public class Parser {
         return stops;
     }
 
-    public static Map<String,Trip> ParseTrips(){
+    public static Map<String,Trip> parseTrips(){
         File tripsFile = new File("src/main/resources/trips.txt");
         Map<String, Trip> trips = new HashMap<>();
 
@@ -39,7 +39,7 @@ public class Parser {
                 String line = br.readLine();
                 while ((line = br.readLine()) != null) {
                     String[] values = line.split(",", -1);
-                    Trip trip = new Trip(values[0], values[2]);
+                    Trip trip = new Trip(values[0], values[2]); // need route_id and trip_id
                     trips.put(trip.getTripId(), trip);
                 }
             } catch(IOException ex) {
@@ -50,7 +50,7 @@ public class Parser {
         return trips;
     }
 
-    public static List<StopTime> ParseStopTimes(){
+    public static List<StopTime> parseStopTimes(){
         File stopTimesFile = new File("src/main/resources/stop_times.txt");
         List<StopTime> stopTimes = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class Parser {
                 String line = br.readLine();
                 while ((line = br.readLine()) != null) {
                     String[] values = line.split(",", -1);
-                    StopTime stopTime = new StopTime(values[0], values[1], values[3]);
+                    StopTime stopTime = new StopTime(values[0], values[1], values[3]); // need trip_id, arrival time and stop_id;
                     stopTimes.add(stopTime);
                 }
             } catch(IOException ex) {

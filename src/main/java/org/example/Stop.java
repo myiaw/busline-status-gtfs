@@ -3,7 +3,7 @@ package org.example;
 
 
 // Integer on values that are null, maybe getters/setters if needed.
-final public class Stop implements java.io.Serializable {
+final public class Stop {
     private final int stopId;
     private final String stopName;
 

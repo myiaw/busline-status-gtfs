@@ -1,6 +1,6 @@
 package org.example;
 
-public class Trip implements java.io.Serializable {
+final public class Trip {
     private final int route_id;
     private final String trip_id;
 

@@ -3,5 +3,5 @@
 # Compile
 javac -d out -cp src/main/java src/main/java/org/example/*.java
 
-# Running the application
+# Run the application with all arguments
 java -cp out org.example.Main "$@"
